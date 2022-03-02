@@ -3,16 +3,21 @@ $(function () {
 
     // 退出登录功能
     $('#btn-tuichu').on('click', function () {
-        layer.confirm('确认退出登录吗？', {icon: 3, title:'提示'}, function(index){
+        layer.confirm('确认退出登录吗？', { icon: 3, title: '提示' }, function (index) {
             //do something
             // 清空本地token
             localStorage.removeItem('token')
             // 跳转页面到登录页面
             location.href = '/login.html'
             layer.close(index);
-          });
+        });
     })
 
+    getUserInfo()
+    // console.log(localStorage.getItem('token'))
+    // 渲染头像和名称
+})
+function getUserInfo() {
     $.ajax({
         method: 'GET',
         url: '/my/userinfo',
@@ -34,23 +39,21 @@ $(function () {
         //     }
         // }
     })
-    // console.log(localStorage.getItem('token'))
-    // 渲染头像和名称
-    function renderAvatar(user) {
-        // console.log(user)
-        // 如果nickname不为空那么优先显示nickname后者显示username
-        var name = user.nickname || user.username
-        // 渲染名称
-        $('.text-name').html('欢迎&nbsp;&nbsp;' + name)
-        // 按需渲染用户的头像
-        if (user.user_pic === null) {
-            // 渲染昵称首字母文本头像
-            $('.text-avatar').html(name[0].toUpperCase()).show()
-            $('.layui-nav-img').hide()
-        } else {
-            // 渲染图片头像
-            $('.layui-nav-img').attr('src', user.user_pic).show
-            $('.text-avatar').hide()
-        }
+}
+function renderAvatar(user) {
+    // console.log(user)
+    // 如果nickname不为空那么优先显示nickname后者显示username
+    var name = user.nickname || user.username
+    // 渲染名称
+    $('.text-name').html('欢迎&nbsp;&nbsp;' + name)
+    // 按需渲染用户的头像
+    if (user.user_pic === null) {
+        // 渲染昵称首字母文本头像
+        $('.text-avatar').html(name[0].toUpperCase()).show()
+        $('.layui-nav-img').hide()
+    } else {
+        // 渲染图片头像
+        $('.layui-nav-img').attr('src', user.user_pic).show
+        $('.text-avatar').hide()
     }
-})
+}

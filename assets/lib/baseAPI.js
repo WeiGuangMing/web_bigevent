@@ -4,8 +4,9 @@ $.ajaxPrefilter(function(option) {
     // console.log(option)
     // 统一为有权限的接口设置headers属性
     if (option.url.indexOf('/my/') !== -1) {
-        option.herders = {Authorization:localStorage.getItem('token') || ''}
+        option.headers = { Authorization: localStorage.getItem('token') || "" }
     }
+    // console.log(option.herders)
     option.complete = function(res) {
         // 在complete回调函数中，可以使用res.responseJSON拿到服务器响应回来的数据
         if (res.responseJSON.status === 1 && res.responseJSON.message === "身份认证失败！") {
