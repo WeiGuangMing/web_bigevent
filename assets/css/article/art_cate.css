@@ -1,0 +1,16 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+    padding: 15px;
+    background-color: #f2f2f2;
+}
+.layui-btn-normal {
+    float: right;
+    margin-top: 6px;
+}
+.layui-form input {
+    width: 360px;
+}

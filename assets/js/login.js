@@ -1,4 +1,5 @@
 $(function () {
+    var layer = layui.layer
     var Reg = /^[A-Za-z0-9]+$/;
     // var userDl = $("#user-dl").val()
     // var passwordDl = $("#password-dl").val()
@@ -16,35 +17,32 @@ $(function () {
 
     // 登录效验
     $("#login-form").on("submit", function (e) {
-        var userDl = $("#user-dl").val()
-        var passwordDl = $("#password-dl").val()
+        // var userDl = $("#user-dl").val()
+        // var passwordDl = $("#password-dl").val()
         var data = $(this).serialize()
         e.preventDefault()
-        if (Reg.test(userDl) && Reg.test(passwordDl) && userDl.length > 5 && userDl.length <= 10 && passwordDl.length > 5 && passwordDl.length <= 15) {
-            $.ajax({
-                method: 'POST',
-                url: '/api/login',
-                data: data,
-                success: function(res) {
-                    if (res.status === 0) {
-                        $(".alert-success").html(res.message)
-                        $(".alert-success").show()
-                        setTimeout(function () {
-                            $(".alert-success").hide()
-                        }, 2000)
-                        // 将登录成功得到的 token 字符串，保存到localStorage中
-                        localStorage.setItem('token', res.token)
-                        location.href = '/index.html'
-                        // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIyNDMsInVzZXJuYW1lIjoid2dtMTIzIiwicGFzc3dvcmQiOiIiLCJuaWNrbmFtZSI6IiIsImVtYWlsIjoiIiwidXNlcl9waWMiOiIiLCJpYXQiOjE2NDU5NjM0MzMsImV4cCI6MTY0NTk5OTQzM30.EmkMvOC7HyyUigRuWWhClCFxuOHt8icbrdr066-Nzks
-                    }
+        // if (Reg.test(userDl) && Reg.test(passwordDl) && userDl.length > 5 && userDl.length <= 10 && passwordDl.length > 5 && passwordDl.length <= 15) {
+        $.ajax({
+            method: 'POST',
+            url: '/api/login',
+            data: data,
+            success: function (res) {
+                if (res.status !== 0) {
+                    return layer.msg(res.message)
                 }
-            })
-        } else {
-            $(".alert-danger").show()
-            setTimeout(function () {
-                $(".alert-danger").hide()
-            }, 2000)
-        }
+                layer.msg('登录成功!')
+                localStorage.setItem('token', res.token)
+                location.href = '/index.html'
+                // 将登录成功得到的 token 字符串，保存到localStorage中
+                // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIyNDMsInVzZXJuYW1lIjoid2dtMTIzIiwicGFzc3dvcmQiOiIiLCJuaWNrbmFtZSI6IiIsImVtYWlsIjoiIiwidXNlcl9waWMiOiIiLCJpYXQiOjE2NDU5NjM0MzMsImV4cCI6MTY0NTk5OTQzM30.EmkMvOC7HyyUigRuWWhClCFxuOHt8icbrdr066-Nzks
+            }
+        })
+        // } else {
+        //     $(".alert-danger").show()
+        //     setTimeout(function () {
+        //         $(".alert-danger").hide()
+        //     }, 2000)
+        // }
     })
 
     // 注册效验
@@ -53,7 +51,7 @@ $(function () {
         var passwordZc = $("#password-zc").val()
         var repasswordZc = $("#repassword-zc").val()
         e.preventDefault()
-        if (Reg.test(userZc) && Reg.test(passwordZc) && Reg.test(repasswordZc) && userZc.length > 5 && userZc.length <= 10 && passwordZc.length > 5 && passwordZc.length <= 15 && repasswordZc.length > 5 && repasswordZc.length <= 15 && passwordZc === repasswordZc) {
+        if (Reg.test(userZc) && Reg.test(passwordZc) && Reg.test(repasswordZc) && userZc.length > 5 && userZc.length <= 10 && passwordZc.length > 5 && passwordZc.length <= 15 && repasswordZc.length > 5 && repasswordZc.length <= 15) {
             $.ajax({
                 method: 'POST',
                 url: '/api/reguser',
@@ -70,7 +68,6 @@ $(function () {
                 },
             })
         } else {
-
             $(".alert-danger").html("注册失败！")
             $(".alert-danger").show()
             setTimeout(function () {
